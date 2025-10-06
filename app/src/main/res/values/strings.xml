@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">My AppOne</string>
+    <string name="hint_quatity">Digite a quantidade</string>
+    <string name="hint_price">Digite o preço</string>
+    <string name="empty_fields">Preencha todos os campos</string>
+    <string name="label_result">Total R$%.2f</string>
+    <string name="btn_calculate">Calcular</string>
+    <string name="btn_clear">Limpar</string>
+</resources>
