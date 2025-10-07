@@ -43,7 +43,7 @@ import com.bruteste.myappone.ui.theme.MyAppOneTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-            //faz experiencias mais modernas na tela toda
+        //faz experiencias mais modernas na tela toda
         enableEdgeToEdge()
         //define o conteudo da tela com jetpack compose
         setContent {
@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 //funcao de construcao da tela/interface
 @Composable
 //Greeting/atual MyAppOne = funcao que exibe/recebe um nome na tela
@@ -97,12 +98,16 @@ fun MyAppOne(modifier: Modifier = Modifier) {
     var quantity by remember {
         mutableStateOf("")
     }
+    var price by remember {
+        mutableStateOf("")
+    }
     Spacer(modifier = Modifier.height(24.dp))
     OutlinedTextField(
         value = quantity,
         onValueChange = { quantity = it },
         label = {
             Text(stringResource(R.string.hint_quantity))
+            Text(stringResource(R.string.hint_price))
         },
         keyboardOptions =
             KeyboardOptions(
@@ -119,28 +124,35 @@ fun MyAppOne(modifier: Modifier = Modifier) {
     Button(
         onClick = {
             if (quantity.isBlank() || price.isBlank()) {
-                Toast.makeText(context,context.getString(R.string.empty_fields),
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context, context.getString(R.string.empty_fields),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 val qtd = quantity.toDouble()
                 val p = price.toDouble()
                 val total = qtd * p
                 result =
-                    context.getString(R.string.label_result, total)}
+                    context.getString(R.string.label_result, total)
+            }
         },
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text =
-            stringResource(R.string.btn_calculate))
+        Text(
+            text =
+                stringResource(R.string.btn_calculate)
+        )
     }
     if (result.isNotEmpty()) {
         Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = result,
-            fontSize = 18.sp,
-            modifier =
-                Modifier.align(Alignment.CenterHorizontally)
-        )
+        Column {
+            Text(
+                text = result,
+                fontSize = 18.sp,
+                modifier =
+                    Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
     }
 }
 
@@ -150,8 +162,9 @@ fun MyAppOne(modifier: Modifier = Modifier) {
 @Composable
 fun MyAppOnePreview() {
     MyAppOneTheme {
-        Scaffold (modifier = Modifier.fillMaxSize())
-        { innerPadding-> MyAppOne(
+        Scaffold(modifier = Modifier.fillMaxSize())
+        { innerPadding ->
+            MyAppOne(
                 modifier = Modifier.padding(innerPadding)
             )
         }
