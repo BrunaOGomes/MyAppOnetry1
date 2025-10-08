@@ -62,111 +62,96 @@ class MainActivity : ComponentActivity() {
 }
 
 //funcao de construcao da tela/interface
-@Composable
 //Greeting/atual MyAppOne = funcao que exibe/recebe um nome na tela
+// Conteúdo da sua coluna aqui
+// 🔹 Linha com imagem e texto lado a lado
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
 fun MyAppOne(modifier: Modifier = Modifier) {
+    var quantity by remember { mutableStateOf("") }
+    var price by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment =
-            Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Conteúdo da sua coluna aqui
-    }
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(
-                id =
-                    R.drawable.dinheiro
-            ),
-            contentDescription =
-                stringResource(R.string.app_name),
-            modifier = Modifier.size(64.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text =
-                stringResource(R.string.app_name),
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-    var quantity by remember {
-        mutableStateOf("")
-    }
-    var price by remember {
-        mutableStateOf("")
-    }
-    Spacer(modifier = Modifier.height(24.dp))
-    OutlinedTextField(
-        value = quantity,
-        onValueChange = { quantity = it },
-        label = {
-            Text(stringResource(R.string.hint_quantity))
-            Text(stringResource(R.string.hint_price))
-        },
-        keyboardOptions =
-            KeyboardOptions(
-                keyboardType =
-                    KeyboardType.Number
-            ),
-        modifier = Modifier.fillMaxWidth()
-    )
-    Spacer(modifier = Modifier.height(24.dp))
 
-    val context = LocalContext.current
-    var result by remember { mutableStateOf("") }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.dinheiro),
+                contentDescription = stringResource(R.string.app_name),
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(R.string.app_name),
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
-    Button(
-        onClick = {
-            if (quantity.isBlank() || price.isBlank()) {
-                Toast.makeText(
-                    context, context.getString(R.string.empty_fields),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                val qtd = quantity.toDouble()
-                val p = price.toDouble()
-                val total = qtd * p
-                result =
-                    context.getString(R.string.label_result, total)
-            }
-        },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text =
-                stringResource(R.string.btn_calculate)
-        )
-    }
-    if (result.isNotEmpty()) {
         Spacer(modifier = Modifier.height(24.dp))
-        Column {
+
+        // 🔹 Campo de quantidade
+        OutlinedTextField(
+            value = quantity,
+            onValueChange = { quantity = it },
+            label = { Text(stringResource(R.string.hint_quantity)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // 🔹 Campo de preço
+        OutlinedTextField(
+            value = price,
+            onValueChange = { price = it },
+            label = { Text(stringResource(R.string.hint_price)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // 🔹 Botão de calcular
+        Button(
+            onClick = {
+                if (quantity.isBlank() || price.isBlank()) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.empty_fields),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val qtd = quantity.toDouble()
+                    val p = price.toDouble()
+                    val total = qtd * p
+                    result = context.getString(R.string.label_result, total)
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(R.string.btn_calculate))
+        }
+
+        // 🔹 Resultado
+        if (result.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = result,
                 fontSize = 18.sp,
-                modifier =
-                    Modifier.align(Alignment.CenterHorizontally)
+                fontWeight = FontWeight.Medium
             )
         }
     }
 }
-
 
 //É essa atualização(rendenização) rapida na tela sem rodar de fato o android
-@Preview(showBackground = true)
-@Composable
-fun MyAppOnePreview() {
-    MyAppOneTheme {
-        Scaffold(modifier = Modifier.fillMaxSize())
-        { innerPadding ->
-            MyAppOne(
-                modifier = Modifier.padding(innerPadding)
-            )
-        }
-    }
-}
